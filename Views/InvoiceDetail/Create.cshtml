@@ -1,0 +1,77 @@
+@model GSM.Models.InvoiceDetail
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>InvoiceDetail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InvoiceID" class="control-label"></label>
+                <select asp-for="InvoiceID" class ="form-control" asp-items="ViewBag.InvoiceID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SumWeight" class="control-label"></label>
+                <input asp-for="SumWeight" class="form-control" />
+                <span asp-validation-for="SumWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PercentGold" class="control-label"></label>
+                <input asp-for="PercentGold" class="form-control" />
+                <span asp-validation-for="PercentGold" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GoldWeight" class="control-label"></label>
+                <input asp-for="GoldWeight" class="form-control" />
+                <span asp-validation-for="GoldWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GoldUnitPrice" class="control-label"></label>
+                <input asp-for="GoldUnitPrice" class="form-control" />
+                <span asp-validation-for="GoldUnitPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GemstoneWeight" class="control-label"></label>
+                <input asp-for="GemstoneWeight" class="form-control" />
+                <span asp-validation-for="GemstoneWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GemstoneUnitPrice" class="control-label"></label>
+                <input asp-for="GemstoneUnitPrice" class="form-control" />
+                <span asp-validation-for="GemstoneUnitPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CraftingWages" class="control-label"></label>
+                <input asp-for="CraftingWages" class="form-control" />
+                <span asp-validation-for="CraftingWages" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IntoMoney" class="control-label"></label>
+                <input asp-for="IntoMoney" class="form-control" />
+                <span asp-validation-for="IntoMoney" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,238 @@
+@model GSM.Models.Invoice
+
+@{
+    ViewData["Title"] = "Add";
+}
+<h1>@ViewBag.mess</h1>
+<form asp-action="Add">
+    <h3>Thông tin khách hàng</h3>
+    <div class="row">
+        <div class="col-md-12">
+            @* <form asp-action="Add"> *@
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <label class="col-md-4">Họ tên khách hàng: </label>
+                        <input class="col-md-7" name="CustomerName" placeholder="Nhập họ tên khách hàng" />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Số: @ViewBag.InVoiceKey</label>
+                        <input name="InvoiceNumber" value="@ViewBag.InVoiceKey" readonly hidden />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <label class="col-md-4">Địa chỉ: </label>
+                        <input class="col-md-7" name="Address" placeholder="Nhập địa chỉ" />
+                    </div>
+                    <div>
+                        <label>Số điện thoại: </label>
+                        <input name="PhoneNumber" placeholder="Nhập số điện thoại" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Ngày: @DateTime.Now.Day</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Tháng: @DateTime.Now.Month</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Năm: @DateTime.Now.Year</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Thời gian: @DateTime.Now.ToShortTimeString()</label>
+                    </div>
+                </div>
+            @* </form> *@
+        </div>
+    </div>
+    <hr />
+    <h3>Thông tin sản phẩm</h3>
+    <div class="row">
+        <div class="row">
+            <div class="ml-3">
+                <label><b>Nhập tên sản phẩm:</b></label>
+            </div>
+            <div class="autocomplete col-md-8" style="width:40em;">
+                <input id="myInput" type="text" name="myProduct" placeholder="Nhập tên sản phẩm" required>
+            </div>
+        </div>
+        <div class="row">
+            <br />
+            <div class="col-lg-3">
+                <label>Tổng trọng lượng:</label>
+                <input value="2" type="number" name="SumWeight" id="SumWeight" placeholder="Tổng trọng lượng"/>
+            </div>
+            <div class="col-lg-3">
+                <label>% Vàng:</label>
+                <input value="50" type="number" name="PercentGold" id="PercentGold" placeholder="% vàng" />
+            </div>
+            <div class="col-lg-3">
+                <label>Trọng lượng vàng:</label>
+                <input value="1" type="number" name="GoldWeight" id="GoldWeight" placeholder="Trọng lượng vàng" />
+            </div>
+            <div class="col-lg-3">
+                <label>Đơn giá vàng:</label>
+                <input value="1" type="number" name="GoldUnitPrice" id="GoldUnitPrice" placeholder="Đơn giá vàng" />
+            </div>
+            <div class="col-lg-3">
+                <label>Trọng lượng đá:</label>
+                <input value="1" type="number" name="GemstoneWeight" id="GemstoneWeight" placeholder="Trọng lượng đá" />
+            </div>
+            <div class="col-lg-3">
+                <label>Đơn giá đá:</label>
+                <input value="1" type="number" name="GemstoneUnitPrice" id="GemstoneUnitPrice" placeholder="Đơn giá đá" />
+            </div>
+            <div class="col-lg-3">
+                <label>Công chế tác:</label>
+                <input value="1" type="number" name="CraftingWages" id="CraftingWages" placeholder="Công chế tác" />
+            </div>
+            
+            <input type="button" class="btn btn-primary add-row mt-3" value="Thêm Sản phẩm" />
+        </div>
+    </div>
+    <hr />
+    <div class="row mb-1">
+        <h3>Thông tin Đơn hàng</h3>
+        <button type="submit" class="btn btn-primary submit ml-1">Lưu thông tin hoá đơn</button>
+        <button type="button" class="btn btn-primary InHoaDon ml-1">In hoá đơn</button>
+    </div>
+    
+    <div>
+        <table id="InvoiceDetail" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" rowspan="2" align="center" class="text-center">STT</th>
+                    <th scope="col" rowspan="2" align="center" class="text-center">Tên hàng</th>
+                    <th scope="col" rowspan="2" align="center" class="text-center">Tổng trọng lượng</th>
+                    <th scope="col" colspan="3" class="text-center">Vàng</th>
+                    <th scope="col" colspan="2" class="text-center">Đá</th>
+                    <th scope="col" rowspan="2" align="center" class="text-center">Công chế tác</th>
+                    <th scope="col" rowspan="2" align="center" class="text-center">Thành tiền</th>
+                    <th scope="col" rowspan="2" align="center" class="text-center">Thao</th>
+                </tr>
+                <tr>
+                    <th scope="col">(%)</th>
+                    <th scope="col">Trọng lượng</th>
+                    <th scope="col">Đơn giá</th>
+                    <th scope="col">Trọng lượng</th>
+                    <th scope="col">Đơn giá</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <label id="TextTotalMoney">Tổng cộng: 0 </label>
+        <input name="TotalMoney" type="number" value="0" id="TotalMoney" readonly/>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $("#InvoiceDetail").on('click','.btnDelete',function(){
+                $(this).closest('tr').remove();
+                ReWriteNumber();
+            });
+            $(".add-row").click(function () {
+                var myProduct = $('#myInput').val();
+                var SumWeight = parseInt($('#SumWeight').val());
+                var PercentGold = parseInt($('#PercentGold').val());
+                var GoldWeight = parseInt($('#GoldWeight').val());
+                var GoldUnitPrice = parseInt($('#GoldUnitPrice').val());
+                var GemstoneWeight = parseInt($('#GemstoneWeight').val());
+                var GemstoneUnitPrice = parseInt($('#GemstoneUnitPrice').val());
+                var CraftingWages = parseInt($('#CraftingWages').val());
+
+                var IntoMoney = GoldWeight * GoldUnitPrice + GemstoneWeight * GemstoneUnitPrice + CraftingWages;
+                var TotalMoney = parseInt($('#TotalMoney').val());
+                var newRow = "<tr>";
+                newRow += '<td class="countNumber"></td>';
+                newRow += '<td>' + myProduct +'</td>';
+                newRow += '<td>' + SumWeight + '</td>';
+                newRow += '<td>' + PercentGold + '</td>';
+                newRow += '<td>' + GoldWeight + '</td>';
+                newRow += '<td>' + GoldUnitPrice + '</td>';
+                newRow += '<td>' + GemstoneWeight + '</td>';
+                newRow += '<td>' + GemstoneUnitPrice + '</td>';
+                newRow += '<td>' + CraftingWages + '</td>';
+                newRow += '<td>' + IntoMoney.toLocaleString() + '</td>';
+                newRow += '<td>' + '<button class="btn btn-primary btnDelete">Delete</button>' + '</td>';
+                newRow += '</tr>';
+
+                $("table tbody").append(newRow);
+                ReWriteNumber();
+                TotalMoney += IntoMoney;
+                $('#TextTotalMoney').html("Tổng cộng: " + TotalMoney.toLocaleString());
+                $('#TotalMoney').val(TotalMoney);
+            });
+            $(".InHoaDon").click(function () {
+                ///
+                var listInvD = new Array();
+                var invoiceDetails = [];
+                var invID = 'N002';
+                var table = document.getElementById('InvoiceDetail');
+                for (var r = 2, n = table.rows.length; r < n; r++) {
+                    @* for (var c = 1, m = table.rows[r].cells.length; c < m-1; c++) {
+                        alert(table.rows[r].cells[c].innerHTML);
+                        
+                    } *@
+                    
+                    @* var prodName = table.rows[r].cells[1].innerHTML;
+                    var sw = table.rows[r].cells[2].innerHTML;
+                    var pg = table.rows[r].cells[3].innerHTML;
+                    var gw = table.rows[r].cells[4].innerHTML;
+                    var gup = table.rows[r].cells[5].innerHTML;
+                    var gsw = table.rows[r].cells[6].innerHTML;
+                    var gsup = table.rows[r].cells[7].innerHTML;
+                    var cw = table.rows[r].cells[8].innerHTML;
+                    var im = table.rows[r].cells[9].innerHTML; *@
+                    var invDetail = {};
+                    invDetail.ProductName = table.rows[r].cells[1].innerHTML;
+                    invDetail.SumWeight = table.rows[r].cells[2].innerHTML;
+                    invDetail.PercentGold = table.rows[r].cells[3].innerHTML;
+                    invDetail.GoldWeight = table.rows[r].cells[4].innerHTML;
+                    invDetail.GoldUnitPrice = table.rows[r].cells[5].innerHTML;
+                    invDetail.GemstoneWeight = table.rows[r].cells[6].innerHTML;
+                    invDetail.GemstoneUnitPrice = table.rows[r].cells[7].innerHTML;
+                    invDetail.CraftingWages = table.rows[r].cells[8].innerHTML;
+                    invDetail.IntoMoney = table.rows[r].cells[9].innerHTML;
+                    listInvD.push(invDetail);
+                    //invoiceDetails.push({InvoiceID:invID,ProductName:prodName,SumWeight:sw,PercentGold:pg,GoldWeight:gw,GoldUnitPrice:gup,GemstoneWeight:gsw,GemstoneUnitPrice:gsup,CraftingWages:cw,IntoMoney:im});
+                    //
+                    $.ajax({
+                        url: '/Sale/AddList',
+                        type: 'POST',
+                        data: JSON.stringify(listInvD),
+                        contentType: "application/json; charset=utf-8",
+                        datatype: 'json',
+                        success: function (r) {
+                            alert(r + " record(s) inserted.");
+                        },
+                        error: function(x) {
+                            alert("Error: " + r);
+                        }
+                    });
+                    //alert(invoiceDetails);
+                }
+                ///
+            });
+        });
+        function ReWriteNumber() {
+            var MyTable = document.getElementById('InvoiceDetail');
+            var rowCount = $("#InvoiceDetail tr").length;
+            for (let i = 2; i < rowCount; i++) {
+                MyTable.rows[i].cells[0].innerHTML = i-1;
+            }
+        }
+        var products = [];
+        @foreach (var item in ViewBag.ListProduct){
+                @:products.push("@Html.Raw(@item)");
+        }
+        //alert(products);
+        
+    </script>
+    <script src="~/js/AutoComplate.js"></script>
+}
