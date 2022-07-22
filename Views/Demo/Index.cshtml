@@ -1,43 +1,48 @@
-<h4>Add Student Deatils</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form id="studenteForm" novalidate class="needs-validation">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label>First Name</label>
-                <input type="text" name="firstName"/>
-            </div>
-            <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" name="lastName"/>
-            </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-primary" onclick="submitStudent()">Submit</button>
-            </div>
-        </form>
-    </div>
-</div>
-<h1>@ViewBag.mess</h1>
-<script type="text/javascript">
-    function submitStudent() {
-        var firstName = "Pham Quang Hien"
-        $.ajax({
-            type: 'POST',
-            url: '/Home/Index',
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
-            data: firstName,
-            success: function (response) {
-                alert("Success: " + data);
-            },
-            error: function (response) {
-                alert('Failed: ' + response);
-            }
-        })
-    }
-    
-</script>
-
+<form>
+    <label>Full name</label>
+    <input type="text" name="fullName" id="fullName" />
+    <input type="button" value="Send Product" class="btn btn-primary" id="btnSubmit" />
+    <input type="button" value="Send list Product" class="btn btn-primary" id="btnSubmit2" />
+</form>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+                debugger;
+                @*var str = document.getElementById('fullName').value;*@
+                var prod = { ProductID: 1, ProductName: "San pham A" };
+                $.ajax({
+                    url: "/Demo/Index",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: prod,
+                    success: function (response) {
+                        alert("Ket qua: " + response);
+                    },
+                    error: function (response) {
+                        alert('Thất bại');
+                    }
+                });
+            });
+            $("#btnSubmit2").click(function () {
+                var listprod = [{ ProductID: 1, ProductName: "San pham A" }, { ProductID: 2, ProductName: "San pham B"}];
+                $.ajax({
+                    url: "/Demo/ListSubmit",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: {"list":listprod},
+                    success: function (response) {
+                        alert("Ket qua: " + response);
+                    },
+                    error: function (response) {
+                        alert('Thất bại');
+                    }
+                });
+            });
+        });
+</script>
+
 }

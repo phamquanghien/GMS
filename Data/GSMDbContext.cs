@@ -9,9 +9,7 @@ namespace GSM.Data{
         }
 
         public DbSet<Product> Product { get; set; }
-
         public DbSet<Invoice> Invoice { get; set; }
-
         public DbSet<InvoiceDetail> InvoiceDetail { get; set; }
     }
 }

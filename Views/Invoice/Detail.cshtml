@@ -1,0 +1,74 @@
+@model IEnumerable<GSM.Models.InvoiceDetail>
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h3>Chi tiết hoá đơn: @ViewBag.informationInvoice</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SumWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PercentGold)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GoldWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GoldUnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GemstoneWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GemstoneUnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CraftingWages)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IntoMoney)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SumWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentGold)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GoldWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GoldUnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GemstoneWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GemstoneUnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CraftingWages)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IntoMoney)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

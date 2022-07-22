@@ -1,0 +1,82 @@
+@model IEnumerable<GSM.Models.Invoice>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh sách hoá đơn</h1>
+
+<div class="row mb-2">
+    <a asp-controller="Sale" asp-action="Create" class="btn btn-primary">Tạo hoá đơn mới</a>
+</div>
+<div class="row mb-2 p-2 border rounded border-primary">
+    <form asp-action="Find">
+        <label>Từ ngày: </label><input type="date" name="startTime" class="ml-2"/>
+        <label>Đến ngày: </label><input type="date" name="finishTime" class="ml-2"/>
+        <input type="text" placeholder="Nhập từ khoá muốn tìm kiếm" name="key"/>
+        <input type="submit" class="btn btn-primary" value="Tìm kiếm"/>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMoney)
+            </th>
+            <th>
+                <label>Thao tác</label>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalMoney)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.InvoiceID">Sửa</a> |
+                <a asp-action="Delete" asp-route-id="@item.InvoiceID">Xoá</a> |
+                <a asp-action="Detail" asp-route-id="@item.InvoiceID">Chi tiết hoá đơn</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

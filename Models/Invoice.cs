@@ -23,6 +23,7 @@ namespace GSM.Models{
         [DisplayName("Mã số")]
         public string InvoiceCode { get; set; }
         [DisplayName("Tổng tiền")]
+        [DisplayFormat(DataFormatString = "{0}")]
         public decimal TotalMoney { get; set; }
         public bool IsPaid { get; set; }
         public ICollection<InvoiceDetail> InvoiceDetails { get; set; }

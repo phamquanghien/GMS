@@ -22,7 +22,25 @@ namespace GSM.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Invoice.ToListAsync());
-        }        
+        }
+        [HttpPost]
+        public async Task<IActionResult> Find(DateTime startTime, DateTime finishTime, string key)
+        {
+            if(!String.IsNullOrEmpty(key)){
+                key = key.Trim();
+            }
+            var model = await _context.Invoice.ToListAsync();
+            if(startTime != null){
+                model = model.Where(m => m.CreateDate >= startTime).ToList();
+            }
+            if(finishTime != null){
+                model = model.Where(m => m.CreateDate <= finishTime).ToList();
+            }
+            if(key!=null){
+                model = model.Where(m => m.CustomerName.Contains(key) || m.InvoiceNumber.Contains(key) || m.PhoneNumber.Contains(key)).ToList();
+            }
+            return View(model);
+        }
 
         // GET: Invoice/Create
         public IActionResult Create()
@@ -141,6 +159,16 @@ namespace GSM.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Detail(int? id){
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var invoice = await _context.Invoice.FindAsync(id);
+            ViewBag.informationInvoice = "Hoá đơn: " + invoice.InvoiceNumber + "-" +invoice.CustomerName + "-" + invoice.PhoneNumber + "-" + invoice.TotalMoney.ToString("#") + "VNĐ";
+            return View(await _context.InvoiceDetail.Where(m => m.InvoiceID == id).ToListAsync());
+        }
         private bool InvoiceExists(int id)
         {
             return _context.Invoice.Any(e => e.InvoiceID == id);

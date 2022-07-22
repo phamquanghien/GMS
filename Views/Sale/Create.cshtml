@@ -4,129 +4,127 @@
     ViewData["Title"] = "Create";
 }
 <h1>@ViewBag.mess</h1>
-<form asp-action="Create">
-    <h3>Thông tin khách hàng</h3>
+<h3>Thông tin khách hàng</h3>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-7">
+                    <label class="col-md-4">Họ tên khách hàng: </label>
+                    <input class="col-md-7" id="CustomerName" name="CustomerName" placeholder="Nhập họ tên khách hàng" />
+                </div>
+                <div class="col-md-4">
+                    <label>Số: @ViewBag.InVoiceKey</label>
+                    <input id="InvoiceNumber" name="InvoiceNumber" value="@ViewBag.InVoiceKey" readonly hidden />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <label class="col-md-4">Địa chỉ: </label>
+                    <input id="Address" class="col-md-7" name="Address" placeholder="Nhập địa chỉ" />
+                </div>
+                <div>
+                    <label>Số điện thoại: </label>
+                    <input id="PhoneNumber" name="PhoneNumber" placeholder="Nhập số điện thoại" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Ngày: @DateTime.Now.Day</label>
+                </div>
+                <div class="col-md-3">
+                    <label>Tháng: @DateTime.Now.Month</label>
+                </div>
+                <div class="col-md-3">
+                    <label>Năm: @DateTime.Now.Year</label>
+                </div>
+                <div class="col-md-3">
+                    <label>Thời gian: @DateTime.Now.ToShortTimeString()</label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<h3>Thông tin sản phẩm</h3>
+<div class="row">
     <div class="row">
-        <div class="col-md-12">
-            @* <form asp-action="Create"> *@
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <label class="col-md-4">Họ tên khách hàng: </label>
-                        <input class="col-md-7" name="CustomerName" placeholder="Nhập họ tên khách hàng" />
-                    </div>
-                    <div class="col-md-4">
-                        <label>Số: @ViewBag.InVoiceKey</label>
-                        <input name="InvoiceNumber" value="@ViewBag.InVoiceKey" readonly hidden />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <label class="col-md-4">Địa chỉ: </label>
-                        <input class="col-md-7" name="Address" placeholder="Nhập địa chỉ" />
-                    </div>
-                    <div>
-                        <label>Số điện thoại: </label>
-                        <input name="PhoneNumber" placeholder="Nhập số điện thoại" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label>Ngày: @DateTime.Now.Day</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Tháng: @DateTime.Now.Month</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Năm: @DateTime.Now.Year</label>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Thời gian: @DateTime.Now.ToShortTimeString()</label>
-                    </div>
-                </div>
-            @* </form> *@
+        <div class="ml-3">
+            <label><b>Nhập tên sản phẩm:</b></label>
+        </div>
+        <div class="autocomplete col-md-8" style="width:40em;">
+            <input id="myInput" type="text" name="myProduct" placeholder="Nhập tên sản phẩm" required>
         </div>
     </div>
-    <hr />
-    <h3>Thông tin sản phẩm</h3>
     <div class="row">
-        <div class="row">
-            <div class="ml-3">
-                <label><b>Nhập tên sản phẩm:</b></label>
-            </div>
-            <div class="autocomplete col-md-8" style="width:40em;">
-                <input id="myInput" type="text" name="myProduct" placeholder="Nhập tên sản phẩm" required>
-            </div>
+        <br />
+        <div class="col-lg-3">
+            <label>Tổng trọng lượng:</label>
+            <input value="2" type="number" name="SumWeight" id="SumWeight" placeholder="Tổng trọng lượng"/>
         </div>
-        <div class="row">
-            <br />
-            <div class="col-lg-3">
-                <label>Tổng trọng lượng:</label>
-                <input value="2" type="number" name="SumWeight" id="SumWeight" placeholder="Tổng trọng lượng"/>
-            </div>
-            <div class="col-lg-3">
-                <label>% Vàng:</label>
-                <input value="50" type="number" name="PercentGold" id="PercentGold" placeholder="% vàng" />
-            </div>
-            <div class="col-lg-3">
-                <label>Trọng lượng vàng:</label>
-                <input value="1" type="number" name="GoldWeight" id="GoldWeight" placeholder="Trọng lượng vàng" />
-            </div>
-            <div class="col-lg-3">
-                <label>Đơn giá vàng:</label>
-                <input value="1" type="number" name="GoldUnitPrice" id="GoldUnitPrice" placeholder="Đơn giá vàng" />
-            </div>
-            <div class="col-lg-3">
-                <label>Trọng lượng đá:</label>
-                <input value="1" type="number" name="GemstoneWeight" id="GemstoneWeight" placeholder="Trọng lượng đá" />
-            </div>
-            <div class="col-lg-3">
-                <label>Đơn giá đá:</label>
-                <input value="1" type="number" name="GemstoneUnitPrice" id="GemstoneUnitPrice" placeholder="Đơn giá đá" />
-            </div>
-            <div class="col-lg-3">
-                <label>Công chế tác:</label>
-                <input value="1" type="number" name="CraftingWages" id="CraftingWages" placeholder="Công chế tác" />
-            </div>
-            
-            <input type="button" class="btn btn-primary add-row mt-3" value="Thêm Sản phẩm" />
+        <div class="col-lg-3">
+            <label>% Vàng:</label>
+            <input value="50" type="number" name="PercentGold" id="PercentGold" placeholder="% vàng" />
         </div>
+        <div class="col-lg-3">
+            <label>Trọng lượng vàng:</label>
+            <input value="1" type="number" name="GoldWeight" id="GoldWeight" placeholder="Trọng lượng vàng" />
+        </div>
+        <div class="col-lg-3">
+            <label>Đơn giá vàng:</label>
+            <input value="1" type="number" name="GoldUnitPrice" id="GoldUnitPrice" placeholder="Đơn giá vàng" />
+        </div>
+        <div class="col-lg-3">
+            <label>Trọng lượng đá:</label>
+            <input value="1" type="number" name="GemstoneWeight" id="GemstoneWeight" placeholder="Trọng lượng đá" />
+        </div>
+        <div class="col-lg-3">
+            <label>Đơn giá đá:</label>
+            <input value="1" type="number" name="GemstoneUnitPrice" id="GemstoneUnitPrice" placeholder="Đơn giá đá" />
+        </div>
+        <div class="col-lg-3">
+            <label>Công chế tác:</label>
+            <input value="1" type="number" name="CraftingWages" id="CraftingWages" placeholder="Công chế tác" />
+        </div>
+        
+        <input type="button" class="btn btn-primary add-row mt-3" value="Thêm Sản phẩm" />
     </div>
-    <hr />
-    <div class="row mb-1">
-        <h3>Thông tin Đơn hàng</h3>
-        <button type="submit" class="btn btn-primary ml-1">Lưu thông tin hoá đơn</button>
-        <button type="button" class="btn btn-primary ml-1">In hoá đơn</button>
-    </div>
-    
-    <div>
-        <table id="InvoiceDetail" class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col" rowspan="2" align="center" class="text-center">STT</th>
-                    <th scope="col" rowspan="2" align="center" class="text-center">Tên hàng</th>
-                    <th scope="col" rowspan="2" align="center" class="text-center">Tổng trọng lượng</th>
-                    <th scope="col" colspan="3" class="text-center">Vàng</th>
-                    <th scope="col" colspan="2" class="text-center">Đá</th>
-                    <th scope="col" rowspan="2" align="center" class="text-center">Công chế tác</th>
-                    <th scope="col" rowspan="2" align="center" class="text-center">Thành tiền</th>
-                    <th scope="col" rowspan="2" align="center" class="text-center">Thao</th>
-                </tr>
-                <tr>
-                    <th scope="col">(%)</th>
-                    <th scope="col">Trọng lượng</th>
-                    <th scope="col">Đơn giá</th>
-                    <th scope="col">Trọng lượng</th>
-                    <th scope="col">Đơn giá</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-        <label id="TextTotalMoney">Tổng cộng: 0 </label>
-        <input name="TotalMoney" type="number" value="0" id="TotalMoney" readonly/>
-    </div>
-</form>
+</div>
+<hr />
+<div class="row mb-1">
+    <h3>Thông tin Đơn hàng</h3>
+    <button type="submit" class="btn btn-primary ml-1">Lưu thông tin hoá đơn</button>
+    <button type="button" class="btn btn-primary ml-1" id="btnInHoaDon">In hoá đơn</button>
+</div>
+
+<div>
+    <table id="InvoiceDetail" class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" rowspan="2" align="center" class="text-center">STT</th>
+                <th scope="col" rowspan="2" align="center" class="text-center">Tên hàng</th>
+                <th scope="col" rowspan="2" align="center" class="text-center">Tổng trọng lượng</th>
+                <th scope="col" colspan="3" class="text-center">Vàng</th>
+                <th scope="col" colspan="2" class="text-center">Đá</th>
+                <th scope="col" rowspan="2" align="center" class="text-center">Công chế tác</th>
+                <th scope="col" rowspan="2" align="center" class="text-center">Thành tiền</th>
+                <th scope="col" rowspan="2" align="center" class="text-center">Thao</th>
+            </tr>
+            <tr>
+                <th scope="col">(%)</th>
+                <th scope="col">Trọng lượng</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Trọng lượng</th>
+                <th scope="col">Đơn giá</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <label id="TextTotalMoney">Tổng cộng: 0 </label>
+    <input name="TotalMoney" type="number" value="0" id="TotalMoney" readonly/>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -167,6 +165,50 @@
                 TotalMoney += IntoMoney;
                 $('#TextTotalMoney').html("Tổng cộng: " + TotalMoney.toLocaleString());
                 $('#TotalMoney').val(TotalMoney);
+            });
+            $("#btnInHoaDon").click(function () {
+                alert("clicked.");
+                //get information of Invoice
+                var cusName = document.getElementById('CustomerName').value;
+                var invNum = document.getElementById('InvoiceNumber').value;
+                var invaddress = document.getElementById('Address').value;
+                var invPhone = document.getElementById('PhoneNumber').value;
+                var creDate = Date.now();
+                var invCode = "";
+                var totalM = document.getElementById('TotalMoney').value;
+                var isPaid = false;
+                var invc = {CustomerName:cusName, InvoiceNumber:invNum, Address:invaddress, PhoneNumber:invPhone, CreateDate:creDate, InvoiceCode:invCode, TotalMoney:totalM, IsPaid:isPaid};
+                //get information of Invoice Detail
+                var listInvD = [];
+                var table = document.getElementById('InvoiceDetail');
+                for (var r = 2, n = table.rows.length; r < n; r++) {
+                    var invDetail = {};
+                    invDetail.InvoiceNumber = invNum;
+                    invDetail.ProductName = table.rows[r].cells[1].innerHTML;
+                    invDetail.SumWeight = table.rows[r].cells[2].innerHTML;
+                    invDetail.PercentGold = table.rows[r].cells[3].innerHTML;
+                    invDetail.GoldWeight = table.rows[r].cells[4].innerHTML;
+                    invDetail.GoldUnitPrice = table.rows[r].cells[5].innerHTML;
+                    invDetail.GemstoneWeight = table.rows[r].cells[6].innerHTML;
+                    invDetail.GemstoneUnitPrice = table.rows[r].cells[7].innerHTML;
+                    invDetail.CraftingWages = table.rows[r].cells[8].innerHTML;
+                    invDetail.IntoMoney = table.rows[r].cells[9].innerHTML;
+                    listInvD.push(invDetail);
+                    //
+                }
+                $.ajax({
+                    url: '/Sale/Create',
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: {"invoice":invc, "listInv":listInvD},
+                    success: function (r) {
+                        console.log(r);
+                    },
+                    error: function(x) {
+                        console.log(x);
+                    }
+                });
             });
         });
         function ReWriteNumber() {
