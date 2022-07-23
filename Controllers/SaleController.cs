@@ -59,6 +59,7 @@ namespace GSM.Controllers
         [HttpPost]
         public IActionResult Create(Invoice invoice, List<InvoiceDetail> listInv){
             //save information of invoice
+            invoice.CreateDate = DateTime.Now;
             _context.Add(invoice);
             _context.SaveChangesAsync();
             //get InvoiceId
@@ -77,7 +78,8 @@ namespace GSM.Controllers
                 _context.Update(inv);
                 _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index","Invoice");
+            //return RedirectToAction("Index","Invoice");
+            return Json("Tạo mới hoá đơn thành công.");
         }
 
         // [HttpPost]

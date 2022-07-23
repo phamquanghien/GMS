@@ -21,62 +21,25 @@ namespace GSM.Controllers
         // GET: Invoice
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Invoice.ToListAsync());
+            return View(await _context.Invoice.OrderByDescending(m => m.CreateDate).ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Find(DateTime startTime, DateTime finishTime, string key)
+        public async Task<IActionResult> Index(DateTime startTime, DateTime finishTime, string key)
         {
             if(!String.IsNullOrEmpty(key)){
                 key = key.Trim();
             }
             var model = await _context.Invoice.ToListAsync();
-            if(startTime != null){
+            if(startTime != null && startTime.ToShortDateString() != "1/1/0001"){
                 model = model.Where(m => m.CreateDate >= startTime).ToList();
             }
-            if(finishTime != null){
+            if(finishTime != null && finishTime.ToShortDateString() != "1/1/0001"){
                 model = model.Where(m => m.CreateDate <= finishTime).ToList();
             }
             if(key!=null){
                 model = model.Where(m => m.CustomerName.Contains(key) || m.InvoiceNumber.Contains(key) || m.PhoneNumber.Contains(key)).ToList();
             }
             return View(model);
-        }
-
-        // GET: Invoice/Create
-        public IActionResult Create()
-        {
-            //tra ve danh sach Invoice trong csdl
-            var model = _context.Invoice.ToList();
-            //neu chua co du lieu => Ma Invoice = "N001"
-            if(model.Count() == 0) ViewBag.InVoiceKey = "N001";
-            //neu co du liẹu trong csdl
-            else {
-                //lay ra ban ghi moi nhat cua Invoice
-                var newKey = model.OrderByDescending(m => m.InvoiceNumber).FirstOrDefault().InvoiceNumber;
-                //su dung ViewBag de tra ve du lieu ma Invoice tu sinh
-                ViewBag.InVoiceKey = strPro.GenerateKey(newKey);
-            }
-            return View();
-        }
-
-        // POST: Invoice/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InvoiceID,CustomerName,InvoiceNumber,Address,PhoneNumber,CreateDate,InvoiceCode,TotalMoney,IsPaid")] Invoice invoice)
-        {
-            invoice.CreateDate = DateTime.Now;
-            invoice.TotalMoney = 0;
-            invoice.IsPaid = false;
-            invoice.InvoiceCode = null;
-            if (ModelState.IsValid)
-            {
-                _context.Add(invoice);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(invoice);
         }
 
         // GET: Invoice/Edit/5
@@ -155,6 +118,11 @@ namespace GSM.Controllers
         {
             var invoice = await _context.Invoice.FindAsync(id);
             _context.Invoice.Remove(invoice);
+            await _context.SaveChangesAsync();
+            var listInvD = await _context.InvoiceDetail.Where(m => m.InvoiceID == id).ToListAsync();
+            foreach(InvoiceDetail invD in listInvD){
+                _context.InvoiceDetail.Remove(invD);
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

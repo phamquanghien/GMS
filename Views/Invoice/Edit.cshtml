@@ -11,6 +11,9 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="InvoiceID" />
+            <input type="hidden" asp-for="InvoiceNumber" />
+            <input type="hidden" asp-for="TotalMoney" />
+            <input type="hidden" asp-for="IsPaid" />
             <div class="form-group">
                 <label asp-for="CustomerName" class="control-label"></label>
                 <input asp-for="CustomerName" class="form-control" />
@@ -25,6 +28,11 @@
                 <label asp-for="PhoneNumber" class="control-label"></label>
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateDate" class="control-label"></label>
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
             </div>
 
             <div class="form-group">

@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Danh sách hoá đơn</h1>
+<h1>Danh sách hoá đơn @ViewBag.countInvD</h1>
 
 <div class="row mb-2">
     <a asp-controller="Sale" asp-action="Create" class="btn btn-primary">Tạo hoá đơn mới</a>
 </div>
 <div class="row mb-2 p-2 border rounded border-primary">
-    <form asp-action="Find">
+    <form asp-action="Index">
         <label>Từ ngày: </label><input type="date" name="startTime" class="ml-2"/>
         <label>Đến ngày: </label><input type="date" name="finishTime" class="ml-2"/>
         <input type="text" placeholder="Nhập từ khoá muốn tìm kiếm" name="key"/>
@@ -18,7 +18,7 @@
     </form>
 </div>
 
-<table class="table">
+<table class="table" id="InvoiceTable">
     <thead>
         <tr>
             <th>
@@ -50,7 +50,6 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.InvoiceID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.InvoiceNumber)
@@ -65,7 +64,7 @@
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
+                @Html.FormatValue(item.CreateDate, "{0:dd-MM-yyyy}")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalMoney)
@@ -79,3 +78,18 @@
 }
     </tbody>
 </table>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            ReWriteNumber();
+        });
+        function ReWriteNumber() {
+            var MyTable = document.getElementById('InvoiceTable');
+            var rowCount = $("#InvoiceTable tr").length;
+            for (let i = 1; i < rowCount; i++) {
+                MyTable.rows[i].cells[0].innerHTML = i;
+            }
+        }
+    </script>
+}
