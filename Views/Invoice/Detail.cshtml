@@ -54,19 +54,19 @@
                 @Html.DisplayFor(modelItem => item.GoldWeight)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GoldUnitPrice)
+                @string.Format("{0:0,0}", item.GoldUnitPrice)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.GemstoneWeight)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GemstoneUnitPrice)
+                @string.Format("{0:0,0}", item.GemstoneUnitPrice)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CraftingWages)
+                @string.Format("{0:0,0}", item.CraftingWages)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IntoMoney)
+                @string.Format("{0:0,0}", item.IntoMoney)
             </td>
         </tr>
 }

@@ -134,7 +134,7 @@ namespace GSM.Controllers
             }
 
             var invoice = await _context.Invoice.FindAsync(id);
-            ViewBag.informationInvoice = "Hoá đơn: " + invoice.InvoiceNumber + "-" +invoice.CustomerName + "-" + invoice.PhoneNumber + "-" + invoice.TotalMoney.ToString("#") + "VNĐ";
+            ViewBag.informationInvoice = "Hoá đơn: " + invoice.InvoiceNumber + "-" +invoice.CustomerName + "-" + invoice.PhoneNumber + "-" + string.Format("{0:0,0}", invoice.TotalMoney) + " VNĐ";
             return View(await _context.InvoiceDetail.Where(m => m.InvoiceID == id).ToListAsync());
         }
         private bool InvoiceExists(int id)

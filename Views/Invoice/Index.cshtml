@@ -67,7 +67,7 @@
                 @Html.FormatValue(item.CreateDate, "{0:dd-MM-yyyy}")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalMoney)
+                @string.Format("{0:0,0}", item.TotalMoney)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.InvoiceID">Sửa</a> |
