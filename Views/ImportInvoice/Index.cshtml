@@ -1,0 +1,46 @@
+@model IEnumerable<GSM.Models.ImportInvoice>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh sách sản phẩm</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Tạo mới sản phẩm</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImportInvoiceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMoney)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImportInvoiceID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalMoney)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ImportInvoiceID">Sửa</a> |
+                <a asp-action="Delete" asp-route-id="@item.ImportInvoiceID">Xoá</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

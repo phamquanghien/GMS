@@ -27,7 +27,9 @@ namespace GSM.Controllers
             ViewData["ProductID"] = new SelectList(_context.Product, "ProductID", "ProductName");
 
             var listProduct = _context.Product.Select(m => m.ProductName).ToArray();
+            //return list product to view
             ViewData["ListProduct"] = listProduct;
+            ViewData["Category"] = new SelectList(_context.Category, "CategoryID", "CategoryName");
 
             var listPro = _context.Product.ToList();
             return View();
@@ -71,6 +73,19 @@ namespace GSM.Controllers
                 _context.Add(invD);
             }
             _context.SaveChangesAsync();
+            //update TotalWeight to Category
+            //--get list InvoiceDetail by InvoiceID
+            var invDetailList = _context.InvoiceDetail.Where(m => m.InvoiceID == invID).ToList();
+            for (var i = 0; i < invDetailList.Count; i++)
+            {
+                var percentGold = invDetailList[i].PercentGold;
+                var goldWeight = invDetailList[i].GoldWeight;
+                var categoryID = _context.Category.Where(m => m.CategoryName == percentGold).First().CategoryID;
+                var category = _context.Category.Find(categoryID);
+                category.TotalWeight = category.TotalWeight-goldWeight;
+                _context.Update(category);
+                _context.SaveChanges();
+            }
             //update IsPaid of Invoice = True
             var inv = _context.Invoice.Find(invID);
             if(inv!=null){

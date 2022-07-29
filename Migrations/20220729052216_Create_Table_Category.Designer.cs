@@ -3,14 +3,16 @@ using System;
 using GSM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GSM.Migrations
 {
     [DbContext(typeof(GSMDbContext))]
-    partial class GSMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220729052216_Create_Table_Category")]
+    partial class Create_Table_Category
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,57 +39,6 @@ namespace GSM.Migrations
                     b.HasKey("CategoryID");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("GSM.Models.ImportInvoice", b =>
-                {
-                    b.Property<int>("ImportInvoiceID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("TotalMoney")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ImportInvoiceID");
-
-                    b.ToTable("ImportInvoice");
-                });
-
-            modelBuilder.Entity("GSM.Models.ImportInvoiceDetail", b =>
-                {
-                    b.Property<int>("InvoiceDetailID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("GoldUnitPrice")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("ImportInvoiceID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("IntoMoney")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("SumWeight")
-                        .HasColumnType("REAL");
-
-                    b.HasKey("InvoiceDetailID");
-
-                    b.HasIndex("ImportInvoiceID");
-
-                    b.ToTable("ImportInvoiceDetails");
                 });
 
             modelBuilder.Entity("GSM.Models.Invoice", b =>
@@ -182,15 +133,6 @@ namespace GSM.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("GSM.Models.ImportInvoiceDetail", b =>
-                {
-                    b.HasOne("GSM.Models.ImportInvoice", "ImportInvoice")
-                        .WithMany("ImportInvoiceDetails")
-                        .HasForeignKey("ImportInvoiceID");
-
-                    b.Navigation("ImportInvoice");
-                });
-
             modelBuilder.Entity("GSM.Models.InvoiceDetail", b =>
                 {
                     b.HasOne("GSM.Models.Invoice", "Invoice")
@@ -198,11 +140,6 @@ namespace GSM.Migrations
                         .HasForeignKey("InvoiceID");
 
                     b.Navigation("Invoice");
-                });
-
-            modelBuilder.Entity("GSM.Models.ImportInvoice", b =>
-                {
-                    b.Navigation("ImportInvoiceDetails");
                 });
 
             modelBuilder.Entity("GSM.Models.Invoice", b =>

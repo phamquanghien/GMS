@@ -1,0 +1,140 @@
+@model GSM.Models.Category
+@{
+    ViewData["Title"] = "Create";
+}
+<hr />
+<h3>Thông tin sản phẩm</h3>
+<div class="row">
+    <div class="col-lg-4">
+        <label>% Vàng:</label>
+        <select asp-for="CategoryID" name="PercentGold" id="PercentGold" class ="form-control" asp-items="ViewBag.CategoryID"></select>
+    </div>
+    <div class="col-lg-4">
+        <label>Tổng trọng lượng:</label>
+        <input class="form-control" value="2" type="number" name="SumWeight" id="SumWeight" placeholder="Tổng trọng lượng"/>
+    </div>
+    <div class="col-lg-4">
+        <label>Đơn giá vàng:</label>
+        <input class="form-control" value="1" type="number" name="GoldUnitPrice" id="GoldUnitPrice" placeholder="Đơn giá vàng" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-10">
+        <label>Chú thích</label>
+        <input class="form-control" type="text" name="Note" id="Note" placeholder="Nhập thông tin mô tả">
+    </div>
+    <input type="button" class="btn btn-primary add-row mt-3" value="Thêm Sản phẩm" />
+</div>
+<hr />
+<div class="row mb-1">
+    <h3>Thông tin Đơn hàng</h3>
+    <button type="button" class="btn btn-primary ml-1" id="btnSaveInvoice">Lưu thông tin hoá đơn</button>
+</div>
+
+<div>
+    <table id="InvoiceDetail" class="table table-bordered">
+        <thead>
+            <tr>
+                <th align="center" class="text-center">STT</th>
+                <th align="center" class="text-center">% Vàng</th>
+                <th align="center" class="text-center">Chi tiết</th>
+                <th align="center" class="text-center">Tổng trọng lượng</th>
+                <th align="center" class="text-center">Đơn giá</th>
+                <th align="center" class="text-center">Thành tiền</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <label id="TextTotalMoney">Tổng cộng: 0 </label>
+    <input name="TotalMoney" type="number" value="0" id="TotalMoney" hidden/>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $("#InvoiceDetail").on('click','.btnDelete',function(){
+                $(this).closest('tr').remove();
+                ReWriteNumber();
+                CaculatedIntoMoney();
+            });
+            $(".add-row").click(function () {
+                var CategoryID = $('#PercentGold option:selected').val();
+                var CategoryName = $('#PercentGold option:selected').text();
+                var note = $('#Note').val();
+                var SumWeight = parseInt($('#SumWeight').val());
+                var GoldUnitPrice = parseInt($('#GoldUnitPrice').val());
+
+                var IntoMoney = SumWeight * GoldUnitPrice;
+                var TotalMoney = parseInt($('#TotalMoney').val());
+                var newRow = "<tr>";
+                newRow += '<td class="countNumber"></td>';
+                newRow += '<td>' + CategoryName + '</td>';
+                newRow += '<td>' + note + '</td>';
+                newRow += '<td>' + SumWeight + '</td>';
+                newRow += '<td>' + GoldUnitPrice + '</td>';
+                newRow += '<td class="IntoMoney">' + IntoMoney.toLocaleString() + '</td>';
+                newRow += '<td style="display:none;">' + CategoryID + '</td>';
+                newRow += '<td>' + '<button class="btn btn-primary btnDelete">Delete</button>' + '</td>';
+                newRow += '</tr>';
+
+                $("table tbody").append(newRow);
+                ReWriteNumber();
+                CaculatedIntoMoney();
+            });
+            $("#btnSaveInvoice").click(function () {
+                debugger;
+                //get information of Invoice
+                var creDate = Date.now();
+                var totalM = document.getElementById('TotalMoney').value;
+                //get information of Invoice Detail
+                var listImpInvD = [];
+                var table = document.getElementById('InvoiceDetail');
+                for (var r = 1, n = table.rows.length; r < n; r++) {
+                    var impInvDetail = {};
+                    impInvDetail.CategoryName = table.rows[r].cells[1].innerHTML;
+                    impInvDetail.Note = table.rows[r].cells[2].innerHTML;
+                    impInvDetail.SumWeight = table.rows[r].cells[3].innerHTML;
+                    impInvDetail.GoldUnitPrice = table.rows[r].cells[4].innerHTML;
+                    impInvDetail.Note = table.rows[r].cells[5].innerHTML;
+                    impInvDetail.CategoryID = table.rows[r].cells[6].innerHTML;
+                    listImpInvD.push(impInvDetail);
+                }
+                $.ajax({
+                    url: '/ImportInvoice/Create',
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: {"listInv":listImpInvD},
+                    success: function (r) {
+                        alert(r);
+                        //location.reload();
+                        window.location.href = "/Category/Index";
+                    },
+                    error: function(x) {
+                        console.log(x);
+                    }
+                });
+            });
+        });
+        function CaculatedIntoMoney() {
+            var table = document.getElementById('InvoiceDetail');
+            var sumMoney = 0;
+            for (var r = 1, n = table.rows.length; r < n; r++) {
+                sumMoney += parseFloat(table.rows[r].cells[5].innerHTML);
+            }
+            TotalMoney = sumMoney;
+            $('#TextTotalMoney').html("Tổng cộng: " + TotalMoney.toLocaleString());
+            $('#TotalMoney').val(TotalMoney);
+        }
+        function ReWriteNumber() {
+            var MyTable = document.getElementById('InvoiceDetail');
+            var rowCount = $("#InvoiceDetail tr").length;
+            for (let i = 1; i < rowCount; i++) {
+                MyTable.rows[i].cells[0].innerHTML = i;
+            }
+        }
+    </script>
+}

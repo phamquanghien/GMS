@@ -1,5 +1,6 @@
-@model GSM.Models.Invoice
-
+@* @model GSM.Models.Invoice *@
+@model GSM.Models.Category
+@* @model GSM.Models.Info *@
 @{
     ViewData["Title"] = "Create";
 }
@@ -65,7 +66,8 @@
         </div>
         <div class="col-lg-3">
             <label>% Vàng:</label>
-            <input value="50" type="number" name="PercentGold" id="PercentGold" placeholder="% vàng" />
+            @* <input value="50" type="number" name="PercentGold" id="PercentGold" placeholder="% vàng" /> *@
+            <select asp-for="CategoryID" name="PercentGold" id="PercentGold" class ="form-control" asp-items="ViewBag.Category"></select>
         </div>
         <div class="col-lg-3">
             <label>Trọng lượng vàng:</label>
@@ -137,7 +139,7 @@
             $(".add-row").click(function () {
                 var myProduct = $('#myInput').val();
                 var SumWeight = parseInt($('#SumWeight').val());
-                var PercentGold = parseInt($('#PercentGold').val());
+                var PercentGold = $('#PercentGold option:selected').text();
                 var GoldWeight = parseFloat($('#GoldWeight').val());
                 var GoldUnitPrice = parseInt($('#GoldUnitPrice').val());
                 var GemstoneWeight = parseFloat($('#GemstoneWeight').val());

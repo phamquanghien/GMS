@@ -13,7 +13,7 @@ namespace GSM.Models{
         [DisplayName("Tổng trọng lượng")]
         public double SumWeight { get; set; }
         [DisplayName("% vàng")]
-        public double PercentGold { get; set; }
+        public string PercentGold { get; set; }
         [DisplayName("Trọng lượng vàng")]
         public double GoldWeight { get; set; }
         [DisplayName("Đơn giá vàng")]
