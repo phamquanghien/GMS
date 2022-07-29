@@ -72,7 +72,11 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.InvoiceID">Sửa</a> |
                 <a asp-action="Delete" asp-route-id="@item.InvoiceID">Xoá</a> |
-                <a asp-action="Detail" asp-route-id="@item.InvoiceID">Chi tiết hoá đơn</a>
+                <a asp-action="Detail" asp-route-id="@item.InvoiceID">Chi tiết hoá đơn</a> |
+                <form asp-action="PrintInvoice">
+                    <input type="hidden" name="invoiceID" value="@item.InvoiceID"/>
+                    <input type="submit" class="btn btn-primary" value="In hoá đơn"/>
+                </form>
             </td>
         </tr>
 }

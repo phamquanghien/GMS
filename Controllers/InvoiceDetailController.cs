@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,32 +16,6 @@ namespace GSM.Controllers
         public InvoiceDetailController(GSMDbContext context)
         {
             _context = context;
-        }
-
-        // GET: InvoiceDetail
-        public async Task<IActionResult> Index()
-        {
-            var gSMDbContext = _context.InvoiceDetail.Include(i => i.Invoice);
-            return View(await gSMDbContext.ToListAsync());
-        }
-
-        // GET: InvoiceDetail/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var invoiceDetail = await _context.InvoiceDetail
-                .Include(i => i.Invoice)
-                .FirstOrDefaultAsync(m => m.InvoiceDetailID == id);
-            if (invoiceDetail == null)
-            {
-                return NotFound();
-            }
-
-            return View(invoiceDetail);
         }
 
         // GET: InvoiceDetail/Create
@@ -61,7 +36,7 @@ namespace GSM.Controllers
             {
                 _context.Add(invoiceDetail);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Invoice");
             }
             ViewData["InvoiceID"] = new SelectList(_context.Invoice, "InvoiceID", "InvoiceID", invoiceDetail.InvoiceID);
             return View(invoiceDetail);
@@ -80,7 +55,7 @@ namespace GSM.Controllers
             {
                 return NotFound();
             }
-            ViewData["InvoiceID"] = new SelectList(_context.Invoice, "InvoiceID", "InvoiceID", invoiceDetail.InvoiceID);
+            ViewBag.invNumber = _context.Invoice.Where(m => m.InvoiceID == invoiceDetail.InvoiceID).First().InvoiceNumber;
             return View(invoiceDetail);
         }
 
@@ -95,7 +70,18 @@ namespace GSM.Controllers
             {
                 return NotFound();
             }
-
+            var invID = _context.InvoiceDetail.Find(id).InvoiceID;
+            if(invID!=invoiceDetail.InvoiceDetailID)
+            {
+                return NotFound();
+            }
+            try{
+                // var IntoMoney = GoldWeight * GoldUnitPrice + GemstoneWeight * GemstoneUnitPrice + CraftingWages;
+                invoiceDetail.IntoMoney = invoiceDetail.CraftingWages + Convert.ToDecimal(invoiceDetail.GoldWeight * Convert.ToDouble(invoiceDetail.GoldUnitPrice) + invoiceDetail.GemstoneWeight * Convert.ToDouble(invoiceDetail.GemstoneUnitPrice));
+            }
+            catch{
+                return BadRequest();
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -114,9 +100,8 @@ namespace GSM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Detail","Invoice", invoiceDetail.InvoiceID);
             }
-            ViewData["InvoiceID"] = new SelectList(_context.Invoice, "InvoiceID", "InvoiceID", invoiceDetail.InvoiceID);
             return View(invoiceDetail);
         }
 
@@ -147,7 +132,7 @@ namespace GSM.Controllers
             var invoiceDetail = await _context.InvoiceDetail.FindAsync(id);
             _context.InvoiceDetail.Remove(invoiceDetail);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index","Invoice");
         }
 
         private bool InvoiceDetailExists(int id)

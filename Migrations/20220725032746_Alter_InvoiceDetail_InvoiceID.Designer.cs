@@ -3,14 +3,16 @@ using System;
 using GSM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GSM.Migrations
 {
     [DbContext(typeof(GSMDbContext))]
-    partial class GSMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220725032746_Alter_InvoiceDetail_InvoiceID")]
+    partial class Alter_InvoiceDetail_InvoiceID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,7 +7,7 @@ namespace GSM.Models{
     public class Product{
         [Key]
         public int ProductID { get; set; }
-        [DisplayName("Tên hàng")]
+        [DisplayName("Tên sản phẩm")]
         public string ProductName { get; set; }
     }
 }

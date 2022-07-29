@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="6.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -19,5 +20,6 @@
   <ItemGroup>
     <None Remove="Newtonsoft.Json" />
     <None Remove="jQuery" />
+    <None Remove="Syncfusion.DocIO.Net.Core" />
   </ItemGroup>
 </Project>

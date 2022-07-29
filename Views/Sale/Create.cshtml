@@ -132,14 +132,15 @@
             $("#InvoiceDetail").on('click','.btnDelete',function(){
                 $(this).closest('tr').remove();
                 ReWriteNumber();
+                CaculatedIntoMoney();
             });
             $(".add-row").click(function () {
                 var myProduct = $('#myInput').val();
                 var SumWeight = parseInt($('#SumWeight').val());
                 var PercentGold = parseInt($('#PercentGold').val());
-                var GoldWeight = parseInt($('#GoldWeight').val());
+                var GoldWeight = parseFloat($('#GoldWeight').val());
                 var GoldUnitPrice = parseInt($('#GoldUnitPrice').val());
-                var GemstoneWeight = parseInt($('#GemstoneWeight').val());
+                var GemstoneWeight = parseFloat($('#GemstoneWeight').val());
                 var GemstoneUnitPrice = parseInt($('#GemstoneUnitPrice').val());
                 var CraftingWages = parseInt($('#CraftingWages').val());
 
@@ -155,15 +156,13 @@
                 newRow += '<td>' + GemstoneWeight + '</td>';
                 newRow += '<td>' + GemstoneUnitPrice + '</td>';
                 newRow += '<td>' + CraftingWages + '</td>';
-                newRow += '<td>' + IntoMoney.toLocaleString() + '</td>';
+                newRow += '<td class="IntoMoney">' + IntoMoney.toLocaleString() + '</td>';
                 newRow += '<td>' + '<button class="btn btn-primary btnDelete">Delete</button>' + '</td>';
                 newRow += '</tr>';
 
                 $("table tbody").append(newRow);
                 ReWriteNumber();
-                TotalMoney += IntoMoney;
-                $('#TextTotalMoney').html("Tổng cộng: " + TotalMoney.toLocaleString());
-                $('#TotalMoney').val(TotalMoney);
+                CaculatedIntoMoney();
             });
             $("#btnSaveInvoice").click(function () {
                 //get information of Invoice
@@ -192,7 +191,6 @@
                     invDetail.CraftingWages = table.rows[r].cells[8].innerHTML;
                     invDetail.IntoMoney = table.rows[r].cells[9].innerHTML;
                     listInvD.push(invDetail);
-                    //
                 }
                 $.ajax({
                     url: '/Sale/Create',
@@ -203,7 +201,7 @@
                     success: function (r) {
                         alert(r);
                         //location.reload();
-                        window.location.href = "/Invoice";
+                        window.location.href = "/Invoice/Index";
                     },
                     error: function(x) {
                         console.log(x);
@@ -211,6 +209,16 @@
                 });
             });
         });
+        function CaculatedIntoMoney() {
+            var table = document.getElementById('InvoiceDetail');
+            var sumMoney = 0;
+            for (var r = 2, n = table.rows.length; r < n; r++) {
+                sumMoney += parseFloat(table.rows[r].cells[9].innerHTML);
+            }
+            TotalMoney = sumMoney;
+            $('#TextTotalMoney').html("Tổng cộng: " + TotalMoney.toLocaleString());
+            $('#TotalMoney').val(TotalMoney);
+        }
         function ReWriteNumber() {
             var MyTable = document.getElementById('InvoiceDetail');
             var rowCount = $("#InvoiceDetail tr").length;

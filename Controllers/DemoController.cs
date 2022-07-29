@@ -1,8 +1,9 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using GSM.Models;
 using GSM.Data;
-using System.Collections.Generic;
+using OfficeOpenXml;
+using System.IO;
+using System;
+using System.Linq;
 
 namespace GSM.Controllers
 {
@@ -17,34 +18,19 @@ namespace GSM.Controllers
         {
             return View();
         }
-        // [HttpPost]
-        // public async Task<IActionResult> Index(Invoice data)
-        // {
-        //     _context.Add(data);
-        //     await _context.SaveChangesAsync();
-        //     return RedirectToAction(nameof(Index));
-        // }
-        [HttpPost]
-        public JsonResult Index(Product prod)
+        public IActionResult PrintInvoice()
         {
-            string fname = "ProductID: " + prod.ProductID + ", ProductName: " + prod.ProductName;
-            return Json(fname);
-        }
-        [HttpPost]
-        public JsonResult ListSubmit(List<Product> list)
-        {
-            string fname = "";
-            if(list.Count==0){
-                fname = "Khong nhan duoc du lieu gui len!";
+            using(ExcelPackage excelPackage = new ExcelPackage())
+            {
+                //create a WorkSheet
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+                //create a new list with books
+                var invoiceDetail = _context.InvoiceDetail.ToList();
+                worksheet.Cells["A1"].Value = "Thông tin hoá đơn";
+                worksheet.Cells["A3"].LoadFromCollection(invoiceDetail);
+                var stream = new MemoryStream(excelPackage.GetAsByteArray()); //Get updated stream
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Demo.xlsx");
             }
-            else{
-                foreach( Product item in list)
-                {
-                    fname += "ProductID: " + item.ProductID + ", ProductName: " + item.ProductName + ";";
-                }
-            }
-            
-           return Json(fname);
         }
     }
 }

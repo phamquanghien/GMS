@@ -36,6 +36,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.IntoMoney)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -67,6 +68,10 @@
             </td>
             <td>
                 @string.Format("{0:0,0}", item.IntoMoney)
+            </td>
+            <td>
+                <a asp-controller="InvoiceDetail" asp-action="Edit" asp-route-id="@item.InvoiceID">Sửa</a>
+                <a asp-controller="InvoiceDetail" asp-action="Delete" asp-route-id="@item.InvoiceID">Xoá</a>
             </td>
         </tr>
 }
