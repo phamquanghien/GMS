@@ -7,13 +7,16 @@ using GSM.Models;
 using GSM.Data;
 using OfficeOpenXml;
 using System.IO;
+using System.Collections.Generic;
+using OfficeOpenXml.Style;
+using GSM.Models;
 
 namespace GSM.Controllers
 {
     public class InvoiceController : Controller
     {
         private readonly GSMDbContext _context;
-        private readonly StringProcess strPro = new StringProcess();
+        private StringProcess strPro = new StringProcess();
 
         public InvoiceController(GSMDbContext context)
         {
@@ -150,35 +153,113 @@ namespace GSM.Controllers
                 ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
                 //create a new list with books
                 var invoiceDetail = _context.InvoiceDetail.Where(m => m.InvoiceID == invoiceID).ToList();
+                
                 for (var i = 0; i < invoiceDetail.Count; i++)
                 {
                     invoiceDetail[i].Invoice = null;
-                    invoiceDetail[i].InvoiceID = null;
+                    //invoiceDetail[i].InvoiceID = null;
                     invoiceDetail[i].InvoiceDetailID = i+1;
                 }
+                
+                //create InvoicePrint list
+                List<InvoicePrint> list = new List<InvoicePrint>();
+                // Add value to InvoicePrint list
+                for (var i = 0; i < invoiceDetail.Count; i++)
+                {
+                    InvoicePrint invPrint = new InvoicePrint();
+                    invPrint.InvoiceDetailID = "     " + (i+1);
+                    invPrint.ProductName = invoiceDetail[i].ProductName;
+                    invPrint.SumWeight = invoiceDetail[i].SumWeight;
+                    invPrint.PercentGold = invoiceDetail[i].PercentGold;
+                    invPrint.GoldWeight = invoiceDetail[i].GoldWeight;
+                    invPrint.GoldUnitPrice = invoiceDetail[i].GoldUnitPrice;
+                    invPrint.GemstoneWeight = invoiceDetail[i].GemstoneWeight;
+                    invPrint.GemstoneUnitPrice = invoiceDetail[i].GemstoneUnitPrice;
+                    invPrint.CraftingWages = invoiceDetail[i].CraftingWages;
+                    invPrint.IntoMoney = invoiceDetail[i].IntoMoney;
+                    list.Add(invPrint);
+                }
                 //customer name
-                worksheet.Cells["A1"].Value = invoice.CustomerName;
-                worksheet.Cells["A1:E1"].Merge = true;
+                worksheet.Cells["D3"].Value = invoice.CustomerName;
+                worksheet.Cells["D3:H3"].Merge = true;
                 //Invoice number
-                worksheet.Cells["G1"].Value = invoice.InvoiceNumber;
+                worksheet.Cells["J3"].Value = invoice.InvoiceNumber;
                 //address
-                worksheet.Cells["A2"].Value = invoice.Address; 
-                worksheet.Cells["A2:E2"].Merge = true;
+                worksheet.Cells["B4"].Value = "                  " + invoice.Address; 
+                worksheet.Cells["B4:G4"].Merge = true;
                 //phone number
-                worksheet.Cells["G2"].Value = invoice.PhoneNumber;
+                worksheet.Cells["J4"].Value = invoice.PhoneNumber;
                 //Create date
-                worksheet.Cells["A3"].Value = invoice.CreateDate.Day;
-                worksheet.Cells["C3"].Value = invoice.CreateDate.Month;
-                worksheet.Cells["E3"].Value = invoice.CreateDate.Year;
+                worksheet.Cells["B5"].Value = invoice.CreateDate.Day + "              ";
+                worksheet.Cells["C5"].Value = invoice.CreateDate.Month;
+                worksheet.Cells["E5"].Value = invoice.CreateDate.Year;
+                worksheet.Cells["E5:F5"].Merge = true;
+                worksheet.Cells["H5"].Value = invoice.CreateDate.Hour + ":" + invoice.CreateDate.Minute;
                 //Invoice detail
-                worksheet.Cells["A5"].LoadFromCollection(invoiceDetail);
+                //worksheet.Cells["A9"].LoadFromCollection(invoiceDetail);
+                worksheet.Cells["A9"].LoadFromCollection(list);
                 //set Width of column
-                worksheet.Column(3).Width = 25;
-                worksheet.Column(11).Width = 25;
+                worksheet.Column(1).Width = 5;
+                worksheet.Column(2).Width = 22;
+                worksheet.Column(3).Width = 6;
+                worksheet.Column(4).Width = 6;
+                worksheet.Column(5).Width = 7;
+                worksheet.Column(7).Width = 7;
+                worksheet.Column(9).Width = 7;
+                worksheet.Column(10).Width = 12;
                 //set Height of row
-                worksheet.Row(3).Height = 50;
+                worksheet.Row(2).Height = 20;
+                worksheet.Row(4).Height = 21;
+                worksheet.Row(5).Height = 21;
+                worksheet.Row(9).Height = 20;
+                worksheet.Row(10).Height = 20;
+                worksheet.Row(11).Height = 21;
+                worksheet.Row(12).Height = 21;
+                //set Horizontal Alignment
+                worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Row(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Row(10).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Row(11).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Row(12).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["D9:D12"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["I9:I12"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells["B5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["C5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["E5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["H5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                //set Style text
+                worksheet.Cells["C9:C12"].Style.Font.Bold = true;
+                worksheet.Cells["E9:E12"].Style.Font.Bold = true;
+                worksheet.Cells["J9:J12"].Style.Font.Bold = true;
+                worksheet.Cells["F9:F12"].Style.Font.Size = 8;
+                worksheet.Cells["H9:H12"].Style.Font.Size = 8;
+                worksheet.Cells["I9:I12"].Style.Font.Size = 8;
+                //set WrapText
+                worksheet.Column(2).Style.WrapText = true;
                 //format number
-                worksheet.Cells["D5:K6"].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells["D9:K14"].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells["B13"].Style.Numberformat.Format = "#,##0";
+                //set page layout
+                worksheet.PrinterSettings.RightMargin = 0M;
+                //get total money
+                worksheet.Cells["B13:C13"].Merge = true;
+                worksheet.Cells["B13"].Value = invoice.TotalMoney;
+                worksheet.Cells["B13"].Style.Font.Bold = true;
+                worksheet.Row(13).Height = 25;
+                //get total money text
+                worksheet.Cells["C14:J14"].Merge = true;
+                string textMoney = strPro.NumberToText(Convert.ToDouble(invoice.TotalMoney));
+                textMoney = strPro.CapitalizeFirstLetter(textMoney);
+                worksheet.Cells["C14"].Value = textMoney;
+                worksheet.Cells["C14"].Style.Font.Bold = true;
+                worksheet.Row(14).Height = 25;
+                //set name of store owner
+                worksheet.Cells["H20"].Value = "Nguyễn Văn Ngọc    ";
+                worksheet.Cells["H20:J20"].Merge = true;
+                worksheet.Cells["H20"].Style.Font.Bold = true;
+                worksheet.Cells["H20"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells["H20"].Style.Font.Name = "Apple Color Emoji";
+
                 var stream = new MemoryStream(excelPackage.GetAsByteArray()); //Get updated stream
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }

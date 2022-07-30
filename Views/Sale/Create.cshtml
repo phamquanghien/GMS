@@ -158,7 +158,7 @@
                 newRow += '<td>' + GemstoneWeight + '</td>';
                 newRow += '<td>' + GemstoneUnitPrice + '</td>';
                 newRow += '<td>' + CraftingWages + '</td>';
-                newRow += '<td class="IntoMoney">' + IntoMoney.toLocaleString() + '</td>';
+                newRow += '<td class="IntoMoney">' + IntoMoney + '</td>';
                 newRow += '<td>' + '<button class="btn btn-primary btnDelete">Delete</button>' + '</td>';
                 newRow += '</tr>';
 
@@ -215,6 +215,7 @@
             var table = document.getElementById('InvoiceDetail');
             var sumMoney = 0;
             for (var r = 2, n = table.rows.length; r < n; r++) {
+                //alert(parseFloat(table.rows[r].cells[9].innerHTML));
                 sumMoney += parseFloat(table.rows[r].cells[9].innerHTML);
             }
             TotalMoney = sumMoney;

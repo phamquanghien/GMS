@@ -1,13 +1,7 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 namespace GSM.Models{
-    [Table("InvoiceDetails")]
-    public class InvoiceDetail{
-        [Key]
-        public int InvoiceDetailID { get; set; }
-        public int InvoiceID { get; set; }
+    public class InvoicePrint{
+        public string InvoiceDetailID { get; set; }
         [DisplayName("Tên hàng")]
         public string ProductName { get; set; }
         [DisplayName("Tổng trọng lượng")]
@@ -26,6 +20,5 @@ namespace GSM.Models{
         public decimal CraftingWages  { get; set; }
         [DisplayName("Thành tiền")]
         public decimal IntoMoney { get; set; }
-        public Invoice Invoice { get; set; }
     }
 }
