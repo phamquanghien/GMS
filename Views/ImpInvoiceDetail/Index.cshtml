@@ -7,20 +7,11 @@
 <h1>Danh sách sản phẩm</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Tạo mới sản phẩm</a>
+    <a class="btn btn-primary" asp-controller="ImportInvoice" asp-action="Delete" asp-route-id="@ViewBag.impInvID">Xoá phiếu nhập</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.InvoiceDetailID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImportInvoiceID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryID)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.CategoryName)
             </th>
@@ -36,41 +27,27 @@
             <th>
                 @Html.DisplayNameFor(model => model.IntoMoney)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.InvoiceDetailID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImportInvoiceID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SumWeight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GoldUnitPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IntoMoney)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ImportInvoiceID">Sửa</a> |
-                <a asp-action="Delete" asp-route-id="@item.ImportInvoiceID">Xoá</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SumWeight)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GoldUnitPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IntoMoney)
+                    </td>
+                </tr>
+        }
     </tbody>
 </table>

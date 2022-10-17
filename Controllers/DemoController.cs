@@ -16,6 +16,15 @@ namespace GSM.Controllers
         }
         public IActionResult Index()
         {
+            var impInvDetailID = _context.ImportInvoiceDetail.Select(m => m.CategoryID).Distinct().ToList();
+            var impInvDetail = _context.ImportInvoiceDetail.OrderBy(m => m.CategoryID).ToList();
+            string message = "";
+            for (var i = 0; i < impInvDetailID.Count; i++)
+            {
+                //message += impInvDetailID[i].ToString() + ",";
+                message += impInvDetailID[i].ToString() + "-" + impInvDetail.Where(m => m.CategoryID == impInvDetailID[i]).Sum(m => m.SumWeight) + ",";
+            }
+            ViewBag.ThongTin = message;
             return View();
         }
         public IActionResult PrintInvoice()

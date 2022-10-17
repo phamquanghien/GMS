@@ -11,11 +11,11 @@
     </div>
     <div class="col-lg-4">
         <label>Tổng trọng lượng:</label>
-        <input class="form-control" value="2" type="number" name="SumWeight" id="SumWeight" placeholder="Tổng trọng lượng"/>
+        <input class="form-control" value="0" type="number" name="SumWeight" id="SumWeight" placeholder="Tổng trọng lượng"/>
     </div>
     <div class="col-lg-4">
         <label>Đơn giá vàng:</label>
-        <input class="form-control" value="1" type="number" name="GoldUnitPrice" id="GoldUnitPrice" placeholder="Đơn giá vàng" />
+        <input class="form-control" value="0" type="number" name="GoldUnitPrice" id="GoldUnitPrice" placeholder="Đơn giá vàng" />
     </div>
 </div>
 <div class="row">
@@ -75,7 +75,7 @@
                 newRow += '<td>' + note + '</td>';
                 newRow += '<td>' + SumWeight + '</td>';
                 newRow += '<td>' + GoldUnitPrice + '</td>';
-                newRow += '<td class="IntoMoney">' + IntoMoney.toLocaleString() + '</td>';
+                newRow += '<td class="IntoMoney">' + IntoMoney + '</td>';
                 newRow += '<td style="display:none;">' + CategoryID + '</td>';
                 newRow += '<td>' + '<button class="btn btn-primary btnDelete">Delete</button>' + '</td>';
                 newRow += '</tr>';
@@ -98,7 +98,6 @@
                     impInvDetail.Note = table.rows[r].cells[2].innerHTML;
                     impInvDetail.SumWeight = table.rows[r].cells[3].innerHTML;
                     impInvDetail.GoldUnitPrice = table.rows[r].cells[4].innerHTML;
-                    impInvDetail.Note = table.rows[r].cells[5].innerHTML;
                     impInvDetail.CategoryID = table.rows[r].cells[6].innerHTML;
                     listImpInvD.push(impInvDetail);
                 }

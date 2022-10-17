@@ -21,10 +21,9 @@ namespace GSM.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ImportInvoice.ToListAsync());
+            return View(await _context.ImportInvoice.OrderByDescending(m => m.CreateDate).ToListAsync());
         }
         public IActionResult Create(){
-            
             ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryName");
             var listPro = _context.Product.ToList();
             return View();
@@ -73,6 +72,37 @@ namespace GSM.Controllers
                 _context.SaveChanges(); 
             }
             return Json("Tạo mới hoá đơn thành công.");
+        }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var impInvoice = await _context.ImportInvoice
+                .FirstOrDefaultAsync(m => m.ImportInvoiceID == id);
+            if (impInvoice == null)
+            {
+                return NotFound();
+            }
+
+            return View(impInvoice);
+        }
+        // POST: Product/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            //remove ImportInvoiceDetail
+            var list = await _context.ImportInvoiceDetail.Where(m => m.ImportInvoiceID == id).ToListAsync();
+            _context.RemoveRange(list);
+            await _context.SaveChangesAsync();
+            //remove ImportInvoice
+            var impInvoice = await _context.ImportInvoice.FindAsync(id);
+            _context.ImportInvoice.Remove(impInvoice);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("CategoryDataNormalization","DataNormalization");
         }
     }
 }

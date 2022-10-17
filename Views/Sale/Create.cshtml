@@ -62,7 +62,7 @@
         <br />
         <div class="col-lg-3">
             <label>Tổng trọng lượng:</label>
-            <input value="2" type="number" name="SumWeight" id="SumWeight" placeholder="Tổng trọng lượng"/>
+            <input type="number" name="SumWeight" id="SumWeight" onchange="GetGemstoneWeight()" placeholder="Tổng trọng lượng"/>
         </div>
         <div class="col-lg-3">
             <label>% Vàng:</label>
@@ -71,23 +71,23 @@
         </div>
         <div class="col-lg-3">
             <label>Trọng lượng vàng:</label>
-            <input value="1" type="number" name="GoldWeight" id="GoldWeight" placeholder="Trọng lượng vàng" />
+            <input type="number" name="GoldWeight" id="GoldWeight" onchange="GetGemstoneWeight()" placeholder="Trọng lượng vàng" />
         </div>
         <div class="col-lg-3">
             <label>Đơn giá vàng:</label>
-            <input value="1" type="number" name="GoldUnitPrice" id="GoldUnitPrice" placeholder="Đơn giá vàng" />
+            <input class="integerIndistinct" type="number" name="GoldUnitPrice" id="GoldUnitPrice" placeholder="Đơn giá vàng" />
         </div>
         <div class="col-lg-3">
             <label>Trọng lượng đá:</label>
-            <input value="1" type="number" name="GemstoneWeight" id="GemstoneWeight" placeholder="Trọng lượng đá" />
+            <input disabled type="number" name="GemstoneWeight" id="GemstoneWeight" placeholder="Trọng lượng đá" />
         </div>
         <div class="col-lg-3">
             <label>Đơn giá đá:</label>
-            <input value="1" type="number" name="GemstoneUnitPrice" id="GemstoneUnitPrice" placeholder="Đơn giá đá" />
+            <input class="integerIndistinct" type="number" name="GemstoneUnitPrice" id="GemstoneUnitPrice" placeholder="Đơn giá đá" />
         </div>
         <div class="col-lg-3">
             <label>Công chế tác:</label>
-            <input value="1" type="number" name="CraftingWages" id="CraftingWages" placeholder="Công chế tác" />
+            <input class="integerIndistinct" type="number" name="CraftingWages" id="CraftingWages" placeholder="Công chế tác" />
         </div>
         
         <input type="button" class="btn btn-primary add-row mt-3" value="Thêm Sản phẩm" />
@@ -110,7 +110,7 @@
                 <th scope="col" colspan="2" class="text-center">Đá</th>
                 <th scope="col" rowspan="2" align="center" class="text-center">Công chế tác</th>
                 <th scope="col" rowspan="2" align="center" class="text-center">Thành tiền</th>
-                <th scope="col" rowspan="2" align="center" class="text-center">Thao</th>
+                <th scope="col" rowspan="2" align="center" class="text-center">Thao tác</th>
             </tr>
             <tr>
                 <th scope="col">(%)</th>
@@ -138,15 +138,16 @@
             });
             $(".add-row").click(function () {
                 var myProduct = $('#myInput').val();
-                var SumWeight = parseInt($('#SumWeight').val());
+                var SumWeight = parseFloat($('#SumWeight').val()).toFixed(3);
                 var PercentGold = $('#PercentGold option:selected').text();
-                var GoldWeight = parseFloat($('#GoldWeight').val());
+                var GoldWeight = parseFloat($('#GoldWeight').val()).toFixed(3);
                 var GoldUnitPrice = parseInt($('#GoldUnitPrice').val());
-                var GemstoneWeight = parseFloat($('#GemstoneWeight').val());
+                var GemstoneWeight = parseFloat($('#GemstoneWeight').val()).toFixed(3);
                 var GemstoneUnitPrice = parseInt($('#GemstoneUnitPrice').val());
                 var CraftingWages = parseInt($('#CraftingWages').val());
+                var categoryID = $('#PercentGold option:selected').val();
 
-                var IntoMoney = GoldWeight * GoldUnitPrice + GemstoneWeight * GemstoneUnitPrice + CraftingWages;
+                var IntoMoney = GoldWeight * GoldUnitPrice + GemstoneUnitPrice + CraftingWages;
                 var TotalMoney = parseInt($('#TotalMoney').val());
                 var newRow = "<tr>";
                 newRow += '<td class="countNumber"></td>';
@@ -159,6 +160,7 @@
                 newRow += '<td>' + GemstoneUnitPrice + '</td>';
                 newRow += '<td>' + CraftingWages + '</td>';
                 newRow += '<td class="IntoMoney">' + IntoMoney + '</td>';
+                newRow += '<td style="display:none;">' + categoryID + '</td>';
                 newRow += '<td>' + '<button class="btn btn-primary btnDelete">Delete</button>' + '</td>';
                 newRow += '</tr>';
 
@@ -192,6 +194,7 @@
                     invDetail.GemstoneUnitPrice = table.rows[r].cells[7].innerHTML;
                     invDetail.CraftingWages = table.rows[r].cells[8].innerHTML;
                     invDetail.IntoMoney = table.rows[r].cells[9].innerHTML;
+                    invDetail.CategoryID = table.rows[r].cells[10].innerHTML;
                     listInvD.push(invDetail);
                 }
                 $.ajax({
@@ -215,7 +218,6 @@
             var table = document.getElementById('InvoiceDetail');
             var sumMoney = 0;
             for (var r = 2, n = table.rows.length; r < n; r++) {
-                //alert(parseFloat(table.rows[r].cells[9].innerHTML));
                 sumMoney += parseFloat(table.rows[r].cells[9].innerHTML);
             }
             TotalMoney = sumMoney;
@@ -229,12 +231,32 @@
                 MyTable.rows[i].cells[0].innerHTML = i-1;
             }
         }
+        function GetGemstoneWeight() {
+            
+            var SumWeight;
+            if($('#SumWeight').val()==""){
+                SumWeight = 0;
+            } else{
+                SumWeight = parseFloat($('#SumWeight').val());
+            }
+            var GoldWeight;
+            if($('#GoldWeight').val()==""){
+                GoldWeight = 0;
+            } else{
+                GoldWeight = parseFloat($('#GoldWeight').val());
+            }
+            var GemstoneWeight = SumWeight - GoldWeight;
+            SumWeight = SumWeight.toFixed(3);
+            GoldWeight = GoldWeight.toFixed(3);
+            GemstoneWeight = GemstoneWeight.toFixed(3);
+            document.getElementById("GemstoneWeight").value = GemstoneWeight;
+            //alert(SumWeight + " - " + GoldWeight + " = " + GemstoneWeight)
+        }
         var products = [];
         @foreach (var item in ViewBag.ListProduct){
                 @:products.push("@Html.Raw(@item)");
         }
         //alert(products);
-        
     </script>
     <script src="~/js/AutoComplate.js"></script>
 }

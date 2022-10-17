@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,6 @@ namespace GSM.Controllers
     public class CategoryController : Controller
     {
         private readonly GSMDbContext _context;
-
         public CategoryController(GSMDbContext context)
         {
             _context = context;
@@ -146,6 +144,12 @@ namespace GSM.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult UpdateDataCategory()
+        {
+            DataNormalization dataNor = new DataNormalization();
+            dataNor.CategoryDataNormalization();
+            return RedirectToAction(nameof(Index));
+        }
         private bool CategoryExists(int id)
         {
             return _context.Category.Any(e => e.CategoryID == id);

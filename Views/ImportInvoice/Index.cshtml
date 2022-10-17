@@ -4,16 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Danh sách sản phẩm</h1>
+<h1>Danh sách phiếu nhập</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Tạo mới sản phẩm</a>
+    <a class="btn btn-primary" asp-action="Create">Tạo phiếu nhập</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ImportInvoiceID)
+                <label>Số phiếu nhập</label>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreateDate)
@@ -25,22 +25,22 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImportInvoiceID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalMoney)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ImportInvoiceID">Sửa</a> |
-                <a asp-action="Delete" asp-route-id="@item.ImportInvoiceID">Xoá</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImportInvoiceID)
+                    </td>
+                    <td>
+                        @Html.FormatValue(item.CreateDate, "{0:dd-MM-yyyy}")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalMoney)
+                    </td>
+                    <td>
+                        <a asp-controller = "ImpInvoiceDetail" asp-action="Index" asp-route-id="@item.ImportInvoiceID">Chi tiết</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ImportInvoiceID">Xoá</a>
+                    </td>
+                </tr>
+        }
     </tbody>
 </table>

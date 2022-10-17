@@ -9,7 +9,6 @@ using OfficeOpenXml;
 using System.IO;
 using System.Collections.Generic;
 using OfficeOpenXml.Style;
-using GSM.Models;
 
 namespace GSM.Controllers
 {
@@ -237,7 +236,8 @@ namespace GSM.Controllers
                 //set WrapText
                 worksheet.Column(2).Style.WrapText = true;
                 //format number
-                worksheet.Cells["D9:K14"].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells["F9:F14"].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells["H9:J14"].Style.Numberformat.Format = "#,##0";
                 worksheet.Cells["B13"].Style.Numberformat.Format = "#,##0";
                 //set page layout
                 worksheet.PrinterSettings.RightMargin = 0M;

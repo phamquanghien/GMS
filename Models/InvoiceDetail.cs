@@ -8,6 +8,7 @@ namespace GSM.Models{
         [Key]
         public int InvoiceDetailID { get; set; }
         public int InvoiceID { get; set; }
+        public int CategoryID { get; set; }
         [DisplayName("Tên hàng")]
         public string ProductName { get; set; }
         [DisplayName("Tổng trọng lượng")]

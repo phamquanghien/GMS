@@ -19,9 +19,10 @@ namespace GSM.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.ImportInvoiceDetail.ToListAsync());
+            ViewBag.impInvID = id;
+            return View(await _context.ImportInvoiceDetail.Where(m => m.ImportInvoiceID == id).ToListAsync());
         }
         
     }

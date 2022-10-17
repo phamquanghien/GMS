@@ -1,0 +1,40 @@
+@model GSM.Models.ImportInvoice
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Bạn có muốn xoá thông tin hoá đơn nhập?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            <label>Số hoá đơn:</label>
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ImportInvoiceID)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            <label>Ngày tạo:</label>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.FormatValue(@Model.CreateDate, "{0:dd-MM-yyyy}")
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            <label>Tổng tiền:</label>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalMoney)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ImportInvoiceID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a class="btn btn-success" asp-action="Index">Danh sách nhập hàng</a>
+    </form>
+</div>
